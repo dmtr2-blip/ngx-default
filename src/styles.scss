@@ -8,11 +8,19 @@ body {
 	font-family: var(--ff-base);
 	font-size: var(--fs);
 	letter-spacing: var(--letter-spacing);
+	scroll-behavior: smooth;
 }
 
 body {
 	min-height: 100vh;
 	margin: 0;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+	font-family: var(--ff-display);
 }
 
 .theme-interactive {
@@ -26,4 +34,43 @@ body {
 		outline: none;
 		box-shadow: var(--focus-ring);
 	}
+}
+
+.reveal-hidden {
+	opacity: 0;
+	transform: translateY(24px);
+}
+
+.reveal-visible {
+	opacity: 1;
+	transform: translateY(0);
+	transition:
+		opacity var(--motion-slow) var(--easing),
+		transform var(--motion-slow) var(--easing);
+}
+
+.contain-section {
+	contain: layout style paint;
+}
+
+.exhibit-card {
+	perspective: 1000px;
+}
+
+.exhibit-card-inner {
+	transform-style: preserve-3d;
+	transition: transform var(--motion) var(--easing);
+}
+
+.exhibit-card:hover .exhibit-card-inner,
+.exhibit-card:focus-within .exhibit-card-inner {
+	transform: rotateY(180deg);
+}
+
+.exhibit-card-face {
+	backface-visibility: hidden;
+}
+
+.exhibit-card-back {
+	transform: rotateY(180deg);
 }

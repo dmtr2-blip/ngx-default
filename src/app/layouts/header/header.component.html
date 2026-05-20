@@ -1,0 +1,159 @@
+<header
+	class="header-bar sticky top-0 z-50 border-b border-[var(--c-border)] bg-[color-mix(in_srgb,var(--c-bg-secondary)_92%,transparent)] backdrop-blur-xl"
+	[class.header-bar--scrolled]="scrolled()"
+>
+	<div class="mx-auto flex max-w-[var(--container)] items-center gap-4 px-4 py-3 sm:px-6">
+		<a
+			aria-label="На головну сторінку музею"
+			class="theme-focus inline-flex shrink-0 items-center"
+			routerLink="/"
+			(click)="closeMenu()"
+		>
+			<img
+				alt="Логотип музею"
+				class="h-11 w-auto rounded-md"
+				[src]="logoUrl"
+				width="132"
+				height="44"
+				decoding="async"
+			/>
+		</a>
+
+		<nav
+			aria-label="Головна навігація"
+			class="hidden flex-1 items-center justify-center gap-1 xl:flex"
+		>
+			@for (link of navLinks; track trackNavLink($index, link)) {
+				<a
+					class="theme-interactive theme-focus rounded-full px-3 py-2 text-sm font-medium text-[var(--c-text)] hover:bg-[var(--c-bg-tertiary)] hover:text-[var(--c-primary)]"
+					[routerLink]="link.path"
+					routerLinkActive="bg-[color-mix(in_srgb,var(--c-primary)_12%,transparent)] text-[var(--c-primary)]"
+				>
+					{{ link.label }}
+				</a>
+			}
+		</nav>
+
+		<div class="ml-auto hidden items-center gap-2 lg:flex">
+			<div
+				class="flex items-center rounded-full border border-[var(--c-border)] bg-[var(--c-bg-primary)] p-1"
+				role="group"
+				aria-label="Вибір мови"
+			>
+				@for (language of languages(); track trackLanguage($index, language)) {
+					<button
+						class="theme-interactive theme-focus rounded-full px-3 py-1.5 text-xs font-bold tracking-wide"
+						[class.bg-[var(--c-primary)]]="activeLanguage() === language.code"
+						[class.text-[var(--c-secondary)]]="activeLanguage() === language.code"
+						[class.text-[var(--c-text)]]="activeLanguage() !== language.code"
+						[attr.aria-pressed]="activeLanguage() === language.code"
+						[attr.aria-label]="'Мова: ' + language.name"
+						(click)="setLanguage(language.code)"
+						type="button"
+					>
+						{{ language.name }}
+					</button>
+				}
+			</div>
+
+			<button
+				class="theme-interactive theme-focus inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--c-border)] text-[var(--c-text-strong)]"
+				[attr.aria-label]="toggleLabel()"
+				(click)="toggleMode()"
+				type="button"
+			>
+				<span class="material-symbols-outlined text-[20px]" aria-hidden="true">{{ toggleIcon() }}</span>
+			</button>
+
+			<a
+				aria-label="Купити квиток онлайн"
+				class="theme-interactive theme-focus inline-flex items-center rounded-full bg-[var(--c-primary)] px-4 py-2 text-sm font-semibold text-[var(--c-secondary)]"
+				[href]="ticketUrl"
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				Купити квиток
+			</a>
+			<a
+				aria-label="Підтримайте музей"
+				class="theme-interactive theme-focus inline-flex items-center rounded-full border border-[var(--c-primary)] px-4 py-2 text-sm font-semibold text-[var(--c-primary)]"
+				routerLink="/donation"
+			>
+				Підтримайте нас
+			</a>
+		</div>
+
+		<button
+			class="theme-interactive theme-focus inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--c-border)] text-[var(--c-text-strong)] lg:hidden"
+			[attr.aria-expanded]="menuOpen()"
+			[attr.aria-label]="menuOpen() ? 'Закрити меню' : 'Відкрити меню'"
+			(click)="toggleMenu()"
+			type="button"
+		>
+			<span class="material-symbols-outlined" aria-hidden="true">
+				{{ menuOpen() ? 'close' : 'menu' }}
+			</span>
+		</button>
+	</div>
+
+	@if (menuOpen()) {
+		<nav
+			aria-label="Мобільна навігація"
+			class="border-t border-[var(--c-border)] bg-[var(--c-bg-secondary)] px-4 py-4 lg:hidden"
+		>
+			<ul class="space-y-2">
+				@for (link of navLinks; track trackNavLink($index, link)) {
+					<li>
+						<a
+							class="theme-focus block rounded-xl px-3 py-3 text-sm font-medium text-[var(--c-text-strong)]"
+							[routerLink]="link.path"
+							routerLinkActive="text-[var(--c-primary)]"
+							(click)="closeMenu()"
+						>
+							{{ link.label }}
+						</a>
+					</li>
+				}
+			</ul>
+			<div class="mt-4 flex flex-wrap gap-2">
+				@for (language of languages(); track trackLanguage($index, language)) {
+					<button
+						class="theme-focus rounded-full border border-[var(--c-border)] px-4 py-2 text-sm font-semibold"
+						[attr.aria-pressed]="activeLanguage() === language.code"
+						(click)="setLanguage(language.code)"
+						type="button"
+					>
+						{{ language.name }}
+					</button>
+				}
+				<button
+					class="theme-focus rounded-full border border-[var(--c-border)] px-4 py-2 text-sm"
+					[attr.aria-label]="toggleLabel()"
+					(click)="toggleMode()"
+					type="button"
+				>
+					Тема
+				</button>
+			</div>
+			<div class="mt-4 grid gap-2">
+				<a
+					aria-label="Купити квиток"
+					class="rounded-full bg-[var(--c-primary)] px-4 py-3 text-center text-sm font-semibold text-[var(--c-secondary)]"
+					[href]="ticketUrl"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					Купити квиток
+				</a>
+				<a
+					aria-label="Підтримайте нас"
+					class="rounded-full border border-[var(--c-primary)] px-4 py-3 text-center text-sm font-semibold text-[var(--c-primary)]"
+					routerLink="/donation"
+					(click)="closeMenu()"
+				>
+					Підтримайте нас
+				</a>
+			</div>
+		</nav>
+	}
+</header>

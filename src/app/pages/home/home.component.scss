@@ -1,0 +1,118 @@
+:host {
+	display: block;
+}
+
+.hero-bg {
+	background-image: var(--hero-image);
+}
+
+.bayda-float {
+	transition: transform var(--motion) var(--easing);
+}
+
+.bayda-float:hover {
+	transform: translateY(-8px) scale(1.03) rotate(-2deg);
+}
+
+.news-card {
+	&__image img {
+		transition: transform var(--motion-slow) var(--easing);
+	}
+
+	&:hover &__image img {
+		transform: scale(1.06);
+	}
+}
+
+.feature-card {
+	transition:
+		transform var(--motion) var(--easing),
+		box-shadow var(--motion) var(--easing);
+
+	&:hover {
+		transform: translateY(-6px);
+		box-shadow: var(--shadow-gold);
+	}
+
+	&__icon {
+		display: inline-block;
+		transition: transform var(--motion) var(--easing);
+	}
+
+	&:hover &__icon {
+		transform: scale(1.12) rotate(-4deg);
+	}
+}
+
+.values-image {
+	transition: transform var(--motion-slow) var(--easing);
+
+	&:hover {
+		transform: scale(1.04);
+	}
+}
+
+.stat-card {
+	transition:
+		transform var(--motion-fast) var(--easing),
+		border-color var(--motion-fast) var(--easing);
+
+	&:hover {
+		transform: translateY(-4px);
+		border-color: var(--c-primary);
+	}
+}
+
+.partner-logo {
+	background: transparent;
+	opacity: 0.92;
+	filter: grayscale(0.05);
+	transition:
+		opacity var(--motion-fast) var(--easing),
+		filter var(--motion-fast) var(--easing),
+		transform var(--motion-fast) var(--easing);
+
+	&:hover {
+		opacity: 1;
+		filter: none;
+		transform: scale(1.05);
+	}
+}
+
+.partners-marquee:hover .marquee-track {
+	animation-play-state: paused;
+}
+
+.gallery-viewport {
+	height: min(52vw, 420px);
+}
+
+.gallery-slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	transition: opacity var(--motion-slow) var(--easing);
+	pointer-events: none;
+
+	&--active {
+		opacity: 1;
+		z-index: 1;
+	}
+}
+
+.gallery-dot {
+	height: 0.55rem;
+	width: 0.55rem;
+	border-radius: 999px;
+	border: none;
+	background: rgba(255, 255, 255, 0.45);
+	cursor: pointer;
+	transition:
+		transform var(--motion-fast) var(--easing),
+		background-color var(--motion-fast) var(--easing);
+
+	&--active {
+		transform: scale(1.25);
+		background: var(--c-primary);
+	}
+}

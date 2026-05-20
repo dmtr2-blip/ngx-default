@@ -1,0 +1,306 @@
+@if (content(); as page) {
+	<app-page-hero
+		[heroImage]="heroImage()"
+		[lead]="page.lead"
+		[sourceUrl]="sourceUrl()"
+		[title]="page.title"
+	/>
+
+	@if (galleryImages().length > 0) {
+		<section class="contain-section border-b border-[var(--c-border)] py-8" appScrollReveal>
+			<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+				<div class="content-gallery-main relative overflow-hidden rounded-[var(--radius-card)]">
+					@for (src of galleryImages(); track trackGalleryImage($index, src); let i = $index) {
+						<img
+							class="content-gallery-slide h-64 w-full object-cover sm:h-80"
+							[class.content-gallery-slide--active]="activeGalleryIndex() === i"
+							[alt]="page.title + ' — фото ' + (i + 1)"
+							[src]="src"
+							loading="lazy"
+							decoding="async"
+						/>
+					}
+				</div>
+			</div>
+		</section>
+	}
+
+	<section class="contain-section py-10 sm:py-14">
+		<div class="mx-auto max-w-3xl px-4 sm:px-6">
+			@if (page.paragraphs) {
+				<div class="space-y-5" appScrollReveal>
+					@for (paragraph of page.paragraphs; track trackParagraph($index, paragraph)) {
+						<p class="content-prose">{{ paragraph }}</p>
+					}
+				</div>
+			}
+
+			@for (section of page.sections ?? []; track trackSection($index, section)) {
+				<section class="content-section mt-12 first:mt-0 sm:mt-14" appScrollReveal>
+					@if (section.image) {
+						<figure class="content-figure mb-8 overflow-hidden rounded-[var(--radius-card)]">
+							<img
+								class="h-auto max-h-80 w-full object-cover"
+								[alt]="section.title ?? page.title"
+								[src]="section.image"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					}
+
+					@if (section.title) {
+						<h2 class="content-section__title">{{ section.title }}</h2>
+					}
+
+					@if (section.paragraphs) {
+						<div class="mt-4 space-y-4">
+							@for (paragraph of section.paragraphs; track trackParagraph($index, paragraph)) {
+								<p class="content-prose">{{ paragraph }}</p>
+							}
+						</div>
+					}
+
+					@if (section.highlight) {
+						<p class="content-highlight mt-4">{{ section.highlight }}</p>
+					}
+
+					@if (section.listTitle && !sectionUsesCollapsible(section)) {
+						<p class="mt-4 text-lg font-semibold text-[var(--c-text-strong)]">{{ section.listTitle }}</p>
+					}
+
+					@if (section.list) {
+						@if (sectionUsesCollapsible(section)) {
+							<details class="content-details mt-4">
+								<summary class="theme-focus">
+									{{ section.listTitle ?? 'Показати повний список' }}
+								</summary>
+								<ul class="content-list">
+									@for (item of section.list; track trackListItem($index, item)) {
+										<li>{{ item }}</li>
+									}
+								</ul>
+							</details>
+						} @else {
+							<ul class="content-list mt-4">
+								@for (item of section.list; track trackListItem($index, item)) {
+									<li>{{ item }}</li>
+								}
+							</ul>
+						}
+					}
+
+					@if (section.table; as table) {
+						<div class="content-table-wrap mt-6">
+							@if (table.caption) {
+								<p class="content-table-caption">{{ table.caption }}</p>
+							}
+							<table class="museum-table w-full min-w-[28rem] text-left">
+								<thead>
+									<tr>
+										@for (header of table.headers; track header) {
+											<th>{{ header }}</th>
+										}
+									</tr>
+								</thead>
+								<tbody>
+									@for (row of table.rows; track trackRow($index, row)) {
+										<tr>
+											@for (cell of row; track cell) {
+												<td>{{ cell }}</td>
+											}
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+
+					@if (section.links) {
+						@if (isPosterList(section)) {
+							<ul class="poster-grid mt-6">
+								@for (link of section.links; track trackLink($index, link)) {
+									<li>
+										@if (hasLinkTarget(link)) {
+											@if (isExternal(link)) {
+												<a
+													class="poster-tile theme-focus"
+													[attr.aria-label]="link.label"
+													[href]="link.href!"
+													rel="noopener noreferrer"
+													target="_blank"
+												>
+													{{ link.label }}
+												</a>
+											} @else {
+												<a
+													class="poster-tile theme-focus"
+													[attr.aria-label]="link.label"
+													[routerLink]="link.href!"
+												>
+													{{ link.label }}
+												</a>
+											}
+										} @else {
+											<span class="poster-tile poster-tile--static">{{ link.label }}</span>
+										}
+									</li>
+								}
+							</ul>
+						} @else {
+							<ul class="content-link-list mt-4">
+								@for (link of section.links; track trackLink($index, link)) {
+									<li>
+										@if (hasLinkTarget(link)) {
+											@if (isExternal(link)) {
+												<a
+													class="content-link theme-focus"
+													[attr.aria-label]="link.label"
+													[href]="link.href!"
+													rel="noopener noreferrer"
+													target="_blank"
+												>
+													{{ link.label }}
+													<span class="material-symbols-outlined text-lg" aria-hidden="true">open_in_new</span>
+												</a>
+											} @else {
+												<a
+													class="content-link theme-focus"
+													[attr.aria-label]="link.label"
+													[routerLink]="link.href!"
+												>
+													{{ link.label }}
+													<span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
+												</a>
+											}
+										} @else {
+											<span class="content-link-static">{{ link.label }}</span>
+										}
+									</li>
+								}
+							</ul>
+						}
+					}
+
+					@if (section.cards) {
+						@if (isEducationGrid(section)) {
+							<ul class="program-grid mt-6">
+								@for (card of section.cards; track trackCard($index, card)) {
+									<li>
+										@if (card.href && (card.external || card.href.startsWith('http'))) {
+											<a
+												class="program-tile program-tile--link theme-focus"
+												[attr.aria-label]="card.title"
+												[href]="card.href"
+												rel="noopener noreferrer"
+												target="_blank"
+											>
+												{{ card.title }}
+												<span class="material-symbols-outlined text-base" aria-hidden="true">open_in_new</span>
+											</a>
+										} @else if (card.href) {
+											<a
+												class="program-tile program-tile--link theme-focus"
+												[attr.aria-label]="card.title"
+												[routerLink]="card.href"
+											>
+												{{ card.title }}
+											</a>
+										} @else {
+											<span class="program-tile">{{ card.title }}</span>
+										}
+									</li>
+								}
+							</ul>
+						} @else {
+							<div class="mt-6 grid gap-4 sm:grid-cols-2">
+								@for (card of section.cards; track trackCard($index, card)) {
+									@if (card.href && (card.external || card.href.startsWith('http'))) {
+										<a
+											class="content-card surface-card theme-focus group block overflow-hidden"
+											[attr.aria-label]="card.title"
+											[href]="card.href"
+											rel="noopener noreferrer"
+											target="_blank"
+										>
+											<ng-container *ngTemplateOutlet="cardBody; context: { $implicit: card }" />
+										</a>
+									} @else if (card.href) {
+										<a
+											class="content-card surface-card theme-focus group block overflow-hidden"
+											[attr.aria-label]="card.title"
+											[routerLink]="card.href"
+										>
+											<ng-container *ngTemplateOutlet="cardBody; context: { $implicit: card }" />
+										</a>
+									} @else {
+										<article class="content-card surface-card overflow-hidden">
+											<ng-container *ngTemplateOutlet="cardBody; context: { $implicit: card }" />
+										</article>
+									}
+								}
+							</div>
+						}
+					}
+				</section>
+			}
+
+			@if (page.cta) {
+				<div class="mt-12 flex flex-wrap gap-3 border-t border-[var(--c-border)] pt-10" appScrollReveal>
+					@for (link of page.cta; track trackLink($index, link)) {
+						@if (hasLinkTarget(link)) {
+							@if (isExternal(link)) {
+								<a
+									class="btn-primary theme-focus"
+									[attr.aria-label]="link.label"
+									[href]="link.href!"
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									{{ link.label }}
+								</a>
+							} @else {
+								<a
+									class="btn-secondary theme-focus"
+									[attr.aria-label]="link.label"
+									[routerLink]="link.href!"
+								>
+									{{ link.label }}
+								</a>
+							}
+						}
+					}
+				</div>
+			}
+		</div>
+	</section>
+} @else {
+	<section class="contain-section py-16">
+		<div class="mx-auto max-w-3xl px-4 sm:px-6" appScrollReveal>
+			<h1 class="content-hero__title content-hero__title--page">Сторінку не знайдено</h1>
+		</div>
+	</section>
+}
+
+<ng-template #cardBody let-card>
+	@if (card.image) {
+		<img
+			class="content-card__image h-44 w-full object-cover"
+			[alt]="card.title"
+			[src]="card.image"
+			loading="lazy"
+			decoding="async"
+		/>
+	}
+	<div class="p-5">
+		@if (card.meta) {
+			<p class="text-sm font-medium text-[var(--c-primary)]">{{ card.meta }}</p>
+		}
+		<h3 class="mt-1 font-display text-xl font-semibold text-[var(--c-text-strong)] group-hover:text-[var(--c-primary)]">
+			{{ card.title }}
+		</h3>
+		@if (card.description) {
+			<p class="mt-2 text-base leading-relaxed text-[var(--c-text-muted)]">{{ card.description }}</p>
+		}
+	</div>
+</ng-template>

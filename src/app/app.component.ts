@@ -3,19 +3,21 @@ import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/cor
 import { RouterOutlet } from '@angular/router';
 import { LanguageService } from '@wawjs/ngx-translate';
 import { environment } from '../environments/environment';
+import { ScrollTopComponent } from './components/scroll-top/scroll-top.component';
 import { FooterComponent } from './layouts/footer/footer.component';
-import { TopbarComponent } from './layouts/topbar/topbar.component';
+import { HeaderComponent } from './layouts/header/header.component';
 
 @Component({
 	selector: 'app-root',
-	imports: [RouterOutlet, TopbarComponent, FooterComponent],
+	imports: [RouterOutlet, HeaderComponent, FooterComponent, ScrollTopComponent],
 	template: `
 		<div class="flex min-h-screen flex-col">
-			<app-topbar />
+			<app-header />
 			<main class="flex-1">
 				<router-outlet />
 			</main>
 			<app-footer />
+			<app-scroll-top />
 		</div>
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,11 +30,9 @@ export class App {
 		effect(() => {
 			const language = this._languageService.language();
 			const htmlLang =
-				environment.languages.find((item) => item.code === language)?.htmlLang ?? language;
+				environment.languages.find((item) => item.code === language)?.htmlLang ?? 'uk';
 
-			if (htmlLang) {
-				this._document.documentElement.lang = htmlLang;
-			}
+			this._document.documentElement.lang = htmlLang;
 		});
 	}
 }

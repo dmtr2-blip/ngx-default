@@ -1,7 +1,7 @@
 {
-  "_id": "",
-  "name": "IT Kamianets",
-  "title": "IT Kamianets",
-  "description": "Web and mobile app development, IT education, internships, and digital solutions for businesses.",
-  "image": "https://ngx.itkamianets.com/logo.png"
+	"_id": "museumsun",
+	"name": "Історія становлення української нації",
+	"title": "Музей «Історія становлення української нації»",
+	"description": "Інтерактивний музей української історії з 3D-експонатами, мультимедійними сюжетами та патріотичною місією відродження національної гідності.",
+	"image": "https://www.museumsun.org/static/images/logo.jpg"
 }

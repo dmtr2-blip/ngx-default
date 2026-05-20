@@ -4,6 +4,8 @@
 	"scripts": {
 		"start": "ng serve",
 		"build": "ng build --configuration=production",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"serve:ssr:app": "node dist/app/server/server.mjs"
 	},
 	"dependencies": {
@@ -32,7 +34,8 @@
 		"postcss": "8.5.3",
 		"prettier": "3.8.1",
 		"tailwindcss": "4.1.12",
-		"typescript": "5.9.2"
+		"typescript": "5.9.2",
+		"vitest": "^4.0.8"
 	},
 	"overrides": {}
 }

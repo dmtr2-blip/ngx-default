@@ -1,0 +1,14 @@
+:host {
+	display: block;
+}
+
+.header-bar {
+	transition:
+		box-shadow var(--motion-fast) var(--easing),
+		border-color var(--motion-fast) var(--easing);
+}
+
+.header-bar--scrolled {
+	box-shadow: var(--shadow-md);
+	border-color: color-mix(in srgb, var(--c-primary) 22%, var(--c-border));
+}

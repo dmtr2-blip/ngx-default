@@ -1,0 +1,31 @@
+.person-hero-image {
+	transition:
+		transform var(--motion-slow) var(--easing),
+		box-shadow var(--motion) var(--easing);
+}
+
+.person-hero-image:hover {
+	transform: scale(1.02);
+	box-shadow: var(--shadow-gold);
+}
+
+.related-card {
+	transition:
+		transform var(--motion) var(--easing),
+		box-shadow var(--motion) var(--easing),
+		border-color var(--motion-fast) var(--easing);
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-gold);
+		border-color: color-mix(in srgb, var(--c-primary) 35%, var(--c-border));
+	}
+
+	img {
+		transition: transform var(--motion-slow) var(--easing);
+	}
+
+	&:hover img {
+		transform: scale(1.05);
+	}
+}

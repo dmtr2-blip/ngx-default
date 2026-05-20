@@ -1,0 +1,52 @@
+@if (exhibit(); as person) {
+	<app-page-hero
+		breadcrumbHref="/"
+		breadcrumbLabel="Експонати"
+		[heroImage]="person.image"
+		[lead]="person.years ?? person.description"
+		[sourceUrl]="sourceUrl()"
+		[title]="person.name"
+	/>
+
+	<section class="contain-section py-10 sm:py-14">
+		<div class="mx-auto max-w-3xl px-4 sm:px-6" appScrollReveal>
+			<p class="content-prose">{{ person.description }}</p>
+			@if (person.detail) {
+				<p class="content-prose mt-4 text-[var(--c-text-muted)]">{{ person.detail }}</p>
+			}
+		</div>
+	</section>
+
+	<section class="contain-section bg-[var(--c-bg-secondary)] py-12 sm:py-16">
+		<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6" appScrollReveal>
+			<h2 class="font-display text-[var(--fs-2xl)] font-bold text-[var(--c-text-strong)]">
+				Інші експонати
+			</h2>
+			<div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+				@for (item of related(); track trackRelated($index, item)) {
+					<a
+						class="related-card glass-card theme-focus overflow-hidden rounded-[var(--radius-card)]"
+						[attr.aria-label]="'Експонат: ' + item.name"
+						[routerLink]="['/person', item.id]"
+					>
+						<img
+							class="h-36 w-full object-cover"
+							[alt]="item.name"
+							[src]="item.image"
+							loading="lazy"
+							decoding="async"
+						/>
+						<p class="p-4 text-base font-semibold text-[var(--c-text-strong)] hover:text-[var(--c-primary)]">
+							{{ item.name }}
+						</p>
+					</a>
+				}
+			</div>
+		</div>
+	</section>
+} @else {
+	<app-page-hero breadcrumbHref="/" breadcrumbLabel="Головна" title="Експонат не знайдено" />
+	<section class="contain-section py-10 text-center">
+		<a class="theme-focus text-[var(--c-primary)]" routerLink="/">На головну</a>
+	</section>
+}

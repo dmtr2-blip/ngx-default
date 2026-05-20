@@ -1,0 +1,312 @@
+.content-hero__eyebrow {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--c-primary);
+}
+
+.content-hero__title {
+	margin-top: 0.75rem;
+	font-family: var(--ff-display);
+	font-size: var(--fs-3xl);
+	font-weight: 700;
+	line-height: 1.15;
+	color: #fff;
+}
+
+.content-hero__title--page {
+	color: var(--c-text-strong);
+}
+
+.content-hero__lead {
+	margin-top: 1rem;
+	max-width: 42rem;
+	font-size: var(--fs-lg);
+	line-height: var(--leading);
+	color: rgba(255, 255, 255, 0.88);
+}
+
+.content-hero__lead--page {
+	color: var(--c-text-muted);
+}
+
+.content-hero--minimal {
+	border-bottom: 1px solid var(--c-border);
+	background: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--c-bg-secondary) 100%, transparent) 0%,
+		var(--c-bg-primary) 100%
+	);
+}
+
+.content-hero--banner .content-hero__overlay {
+	background: linear-gradient(
+		to top,
+		var(--c-bg-primary) 4%,
+		color-mix(in srgb, var(--c-bg-primary) 72%, transparent) 55%,
+		color-mix(in srgb, var(--c-bg-primary) 20%, transparent) 100%
+	);
+}
+
+.content-section__title {
+	font-family: var(--ff-display);
+	font-size: var(--fs-xl);
+	font-weight: 700;
+	color: var(--c-text-strong);
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid color-mix(in srgb, var(--c-primary) 35%, transparent);
+}
+
+.content-prose {
+	font-size: var(--fs-lg);
+	line-height: var(--leading);
+	color: var(--c-text);
+}
+
+.content-highlight {
+	border-left: 3px solid var(--c-primary);
+	padding: 1rem 1.25rem;
+	border-radius: 0 var(--radius) var(--radius) 0;
+	background: color-mix(in srgb, var(--c-primary) 6%, var(--c-bg-secondary));
+	color: var(--c-primary);
+	font-weight: 500;
+}
+
+.content-list {
+	display: grid;
+	gap: 0.65rem;
+	padding-left: 1.25rem;
+	list-style: disc;
+	color: var(--c-text);
+	font-size: var(--fs-lg);
+	line-height: var(--leading);
+}
+
+.content-link-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.content-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	font-weight: 500;
+	color: var(--c-primary);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.content-link-static {
+	display: block;
+	padding: 0.35rem 0;
+	font-size: var(--fs-lg);
+	line-height: var(--leading);
+	color: var(--c-text);
+}
+
+.poster-grid {
+	display: grid;
+	gap: 0.65rem;
+}
+
+@media (min-width: 640px) {
+	.poster-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.poster-tile {
+	display: block;
+	padding: 0.9rem 1rem;
+	border-radius: var(--radius);
+	border: 1px solid var(--c-border);
+	background: var(--c-bg-secondary);
+	font-size: var(--fs-sm);
+	font-weight: 600;
+	line-height: 1.35;
+	color: var(--c-text-strong);
+	transition:
+		border-color var(--motion-fast) var(--easing),
+		background-color var(--motion-fast) var(--easing),
+		color var(--motion-fast) var(--easing);
+}
+
+a.poster-tile:hover {
+	border-color: color-mix(in srgb, var(--c-primary) 45%, var(--c-border));
+	background: color-mix(in srgb, var(--c-primary) 8%, var(--c-bg-secondary));
+	color: var(--c-primary);
+}
+
+.poster-tile--static {
+	cursor: default;
+}
+
+.program-grid {
+	display: grid;
+	gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+	.program-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.program-tile--link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: inherit;
+
+	&:hover {
+		color: var(--c-primary);
+	}
+}
+
+.program-tile {
+	padding: 1rem 1.15rem;
+	border-radius: var(--radius);
+	border: 1px solid var(--c-border);
+	background: var(--c-bg-secondary);
+	font-weight: 600;
+	color: var(--c-text-strong);
+}
+
+.surface-card {
+	border-radius: var(--radius-card);
+	border: 1px solid var(--c-border);
+	background: var(--c-bg-secondary);
+	transition:
+		border-color var(--motion-fast) var(--easing),
+		box-shadow var(--motion-fast) var(--easing);
+}
+
+a.surface-card:hover {
+	border-color: color-mix(in srgb, var(--c-primary) 40%, var(--c-border));
+	box-shadow: var(--shadow-sm);
+}
+
+.content-card__image {
+	transition: transform var(--motion-slow) var(--easing);
+}
+
+a.content-card:hover .content-card__image {
+	transform: scale(1.03);
+}
+
+.content-table-wrap {
+	overflow-x: auto;
+	border-radius: var(--radius-card);
+	border: 1px solid var(--c-border);
+}
+
+.content-table-caption {
+	padding: 0.85rem 1rem;
+	border-bottom: 1px solid var(--c-border);
+	font-weight: 600;
+	color: var(--c-text-strong);
+	background: var(--c-bg-secondary);
+}
+
+.museum-table {
+	border-collapse: collapse;
+	font-size: var(--fs-sm);
+
+	th {
+		padding: 0.75rem 1rem;
+		font-weight: 600;
+		color: var(--c-primary);
+		background: var(--c-bg-tertiary);
+	}
+
+	td {
+		padding: 0.75rem 1rem;
+		color: var(--c-text);
+	}
+
+	tbody tr:nth-child(even) {
+		background: color-mix(in srgb, var(--c-bg-secondary) 65%, transparent);
+	}
+
+	tbody tr:hover {
+		background: color-mix(in srgb, var(--c-primary) 5%, transparent);
+	}
+}
+
+.content-details {
+	border-radius: var(--radius-card);
+	border: 1px solid var(--c-border);
+	background: var(--c-bg-secondary);
+
+	summary {
+		list-style: none;
+		cursor: pointer;
+		padding: 1rem 1.15rem;
+		font-weight: 600;
+		color: var(--c-primary);
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
+
+	&[open] summary {
+		border-bottom: 1px solid var(--c-border);
+	}
+
+	ul {
+		padding: 1rem 1.15rem 1rem 2rem;
+	}
+}
+
+.content-gallery-main {
+	border: 1px solid var(--c-border);
+	border-radius: var(--radius-card);
+}
+
+.content-gallery-slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	transition: opacity var(--motion-slow) var(--easing);
+
+	&--active {
+		position: relative;
+		opacity: 1;
+	}
+}
+
+.btn-primary,
+.btn-secondary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--radius-btn);
+	padding: 0.7rem 1.35rem;
+	font-size: var(--fs-sm);
+	font-weight: 600;
+	transition: transform var(--motion-fast) var(--easing);
+}
+
+.btn-primary {
+	background: var(--c-primary);
+	color: var(--c-secondary);
+}
+
+.btn-primary:hover {
+	transform: translateY(-1px);
+}
+
+.btn-secondary {
+	border: 1px solid var(--c-primary);
+	color: var(--c-primary);
+}
+
+.btn-secondary:hover {
+	background: color-mix(in srgb, var(--c-primary) 10%, transparent);
+}

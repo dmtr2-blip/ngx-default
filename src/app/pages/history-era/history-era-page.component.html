@@ -1,0 +1,66 @@
+@if (content(); as page) {
+	<app-page-hero
+		[breadcrumbHref]="'/history'"
+		breadcrumbLabel="Історія"
+		[heroImage]="page.heroImage"
+		[lead]="page.lead"
+		[sourceUrl]="sourceUrl()"
+		[title]="page.title"
+	/>
+
+	<section class="contain-section py-10 sm:py-14">
+		<div class="mx-auto max-w-3xl px-4 sm:px-6">
+			@if (page.paragraphs) {
+				<div class="space-y-5" appScrollReveal>
+					@for (paragraph of page.paragraphs; track trackParagraph($index, paragraph)) {
+						<p class="content-prose">{{ paragraph }}</p>
+					}
+				</div>
+			}
+
+			@for (section of page.sections ?? []; track trackSection($index, section)) {
+				<section class="content-section mt-12 first:mt-0 sm:mt-14" appScrollReveal>
+					@if (section.title) {
+						<h2 class="content-section__title">{{ section.title }}</h2>
+					}
+					@if (section.paragraphs) {
+						<div class="mt-4 space-y-4">
+							@for (paragraph of section.paragraphs; track trackParagraph($index, paragraph)) {
+								<p class="content-prose">{{ paragraph }}</p>
+							}
+						</div>
+					}
+					@if (section.links?.length) {
+						<ul class="mt-6 flex flex-wrap gap-3">
+							@for (link of section.links; track trackLink($index, link)) {
+								<li>
+									@if (hasLinkTarget(link)) {
+										@if (isExternal(link)) {
+											<a
+												class="btn-secondary theme-focus"
+												[href]="link.href"
+												rel="noopener noreferrer"
+												target="_blank"
+											>
+												{{ link.label }}
+											</a>
+										} @else {
+											<a class="btn-secondary theme-focus" [routerLink]="link.href!">
+												{{ link.label }}
+											</a>
+										}
+									}
+								</li>
+							}
+						</ul>
+					}
+				</section>
+			}
+		</div>
+	</section>
+} @else {
+	<app-page-hero breadcrumbHref="/history" breadcrumbLabel="Історія" title="Сторінку не знайдено" />
+	<section class="contain-section py-10 text-center">
+		<a class="theme-focus text-[var(--c-primary)]" routerLink="/history">До розділу «Історія»</a>
+	</section>
+}

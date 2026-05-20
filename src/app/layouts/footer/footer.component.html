@@ -1,67 +1,84 @@
 <footer class="border-t border-[var(--c-border)] bg-[var(--c-bg-secondary)]">
-	<div class="mx-auto grid max-w-[var(--container)] gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(14rem,0.8fr)] lg:gap-16">
-		<div class="grid gap-5 sm:grid-cols-[7rem_minmax(0,1fr)] sm:items-start">
-			<div
-				class="overflow-hidden rounded-[calc(var(--radius-card)*1.8)] border border-[var(--c-border)] bg-[var(--c-bg-primary)] p-3 shadow-[var(--shadow-sm)]"
-			>
+	<div class="mx-auto max-w-[var(--container)] px-4 py-12 sm:px-6">
+		<div class="flex flex-col items-center gap-8 text-center md:flex-row md:justify-between md:text-left">
+			<div class="flex flex-col items-center gap-4 md:items-start">
 				<img
-					class="h-auto w-full rounded-[calc(var(--radius-card)*1.1)] object-cover"
-					[src]="companyImage()"
-					[attr.alt]="companyImageAlt()"
+					alt="Логотип музею"
+					class="h-14 w-auto"
+					[src]="logoUrl"
 					loading="lazy"
 					decoding="async"
 				/>
-			</div>
-
-			<div>
-				<p
-					class="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--c-text-muted)]"
-					translate
-				>
-					About company
-				</p>
-				@if (company().name) {
-					<p class="mt-3 text-xl font-semibold text-[var(--c-text-strong)]">
-						{{ company().name }}
-					</p>
-				}
-				<p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--c-text)]">
-					{{ company().description }}
-				</p>
-			</div>
-		</div>
-
-		<div class="flex flex-col gap-4">
-			<p
-				class="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--c-text-muted)]"
-				translate
-			>
-				Pages
-			</p>
-			<nav [translate]="{ ariaLabel: 'Pages footer navigation' }">
-				<ul class="space-y-3">
-
-					@for (page of pageLinks(); track page.path) {
-						<li>
-							<a
-								class="theme-focus inline-flex rounded-md text-base font-medium text-[var(--c-text-strong)] transition-colors duration-150 hover:text-[var(--c-primary)]"
-								[routerLink]="page.path"
-								[translate]="page.label"
-							>
-							</a>
-						</li>
+				<p class="text-sm text-[var(--c-text-muted)]">
+					©
+					@if (copyrightYear > copyrightStartYear) {
+						{{ copyrightStartYear }}–{{ copyrightYear }}
+					} @else {
+						{{ copyrightStartYear }}
 					}
-				</ul>
-			</nav>
-		</div>
-	</div>
+					Всі права захищено
+				</p>
+			</div>
 
-	<div class="border-t border-[var(--c-border)]">
-		<div class="mx-auto flex max-w-[var(--container)] px-4 py-4 text-sm text-[var(--c-text-muted)] sm:px-6">
-			<p>
-				&copy; {{ currentYear }} {{ company().name || company().title }}.
-				<span translate>All rights reserved.</span>
-			</p>
+			<nav aria-label="Посилання в підвалі" class="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">
+				@for (link of footerLinks; track link.path) {
+					<a
+						class="theme-focus font-medium text-[var(--c-text)] hover:text-[var(--c-primary)]"
+						[attr.aria-label]="link.label"
+						[routerLink]="link.path"
+					>
+						{{ link.label }}
+					</a>
+				}
+				<a
+					aria-label="3D моделі"
+					class="theme-focus font-medium text-[var(--c-text)] hover:text-[var(--c-primary)]"
+					href="https://www.museumsun.org/3dmodels/"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					3D моделі
+				</a>
+			</nav>
+
+			<div class="flex flex-wrap justify-center gap-3">
+				<a
+					aria-label="Купити квиток"
+					class="theme-focus rounded-full bg-[var(--c-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--c-secondary)]"
+					[href]="ticketUrl"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					Купити квиток
+				</a>
+				<a
+					aria-label="Підтримайте нас"
+					class="theme-focus rounded-full border border-[var(--c-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--c-primary)]"
+					routerLink="/donation"
+				>
+					Підтримайте нас
+				</a>
+			</div>
+		</div>
+
+		<div class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+			@for (social of socialLinks; track trackSocial($index, social)) {
+				<a
+					class="social-icon theme-focus theme-interactive inline-flex"
+					[attr.aria-label]="social.label"
+					[href]="social.href"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					<img
+						class="h-8 w-8 object-contain sm:h-9 sm:w-9"
+						[alt]="social.label"
+						[src]="'https://www.museumsun.org/static/images/' + social.icon + '.svg'"
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
+			}
 		</div>
 	</div>
 </footer>

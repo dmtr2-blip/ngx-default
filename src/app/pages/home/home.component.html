@@ -1,0 +1,355 @@
+<app-museum-schema
+	[name]="companyName"
+	[description]="companyDescription"
+	[image]="companyImage"
+/>
+
+<!-- Hero -->
+<section class="relative flex min-h-[100svh] items-center justify-center overflow-hidden contain-section">
+	<div
+		class="hero-bg absolute inset-0 bg-cover bg-center will-change-transform"
+		[style.transform]="'translate3d(0, ' + parallaxOffset() + 'px, 0) scale(1.08)'"
+		[style.background-image]="'var(--hero-image)'"
+		aria-hidden="true"
+	></div>
+	<div class="absolute inset-0 bg-gradient-to-b from-[#0a0f2e]/75 via-[#0a0f2e]/55 to-[#0a0f2e]" aria-hidden="true"></div>
+
+	<div class="relative z-10 mx-auto grid w-full max-w-[var(--container)] gap-10 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center">
+		<div appScrollReveal>
+			<p class="text-base font-semibold tracking-[0.35em] text-[var(--c-primary)]">2019</p>
+			<h1 class="mt-4 max-w-4xl font-display text-[var(--fs-3xl)] font-bold leading-tight text-white sm:text-[var(--fs-4xl)]">
+				ІСТОРІЯ СТАНОВЛЕННЯ УКРАЇНСЬКОЇ НАЦІЇ
+			</h1>
+			<div class="mt-8 flex flex-wrap gap-3">
+				<a
+					aria-label="Купити квиток"
+					class="theme-focus rounded-full bg-[var(--c-primary)] px-6 py-3 text-base font-semibold text-[var(--c-secondary)]"
+					[href]="ticketUrl"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					Купити квиток
+				</a>
+				<a
+					aria-label="Дізнатися про музей"
+					class="theme-focus rounded-full border border-white/40 px-6 py-3 text-base font-semibold text-white"
+					routerLink="/aboutmuseum"
+				>
+					Про музей
+				</a>
+			</div>
+		</div>
+
+		<div appScrollReveal class="flex justify-center lg:justify-end">
+			<img
+				alt="Фігура Байди"
+				class="bayda-float h-auto max-h-[min(52vh,420px)] w-auto drop-shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+				[src]="baydaImage"
+				loading="eager"
+				decoding="async"
+			/>
+		</div>
+	</div>
+
+	<a
+		aria-label="Прокрутити до наступної секції"
+		class="scroll-arrow absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[var(--c-primary)]"
+		href="#news"
+	>
+		<span class="material-symbols-outlined text-4xl" aria-hidden="true">keyboard_arrow_down</span>
+	</a>
+</section>
+
+<!-- News -->
+<section id="news" class="contain-section py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="font-display text-[var(--fs-2xl)] font-bold text-[var(--c-text-strong)] sm:text-[var(--fs-3xl)]">Новини</h2>
+		<div class="mt-10 grid gap-6 md:grid-cols-3">
+			@for (item of news; track trackNews($index, item)) {
+				<a
+					class="news-card glass-card theme-interactive theme-focus group overflow-hidden rounded-[var(--radius-card)]"
+					[attr.aria-label]="'Новина: ' + item.title"
+					[href]="item.href"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					<div class="news-card__image overflow-hidden">
+						<img
+							class="h-44 w-full object-cover"
+							[alt]="item.title"
+							[src]="item.image"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<div class="p-6">
+						<p class="text-lg font-semibold leading-snug text-[var(--c-text-strong)] group-hover:text-[var(--c-primary)]">
+							{{ item.title }}
+						</p>
+						<span class="mt-4 inline-flex items-center gap-1 text-sm text-[var(--c-primary)]">
+							Читати
+							<span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
+						</span>
+					</div>
+				</a>
+			}
+		</div>
+		<div class="mt-8 text-center">
+			<a
+				aria-label="Перейти до прес-центру"
+				class="theme-focus inline-flex rounded-full border border-[var(--c-primary)] px-6 py-3 text-sm font-semibold text-[var(--c-primary)]"
+				routerLink="/presscenter"
+			>
+				Прес-центр
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- Gallery -->
+<section class="contain-section bg-[var(--c-bg-secondary)] py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="font-display text-center text-3xl font-bold text-[var(--c-text-strong)]">Галерея музею</h2>
+		<div
+			class="gallery-viewport relative mt-10 overflow-hidden rounded-[var(--radius-card)] border border-[var(--c-border)] shadow-[var(--shadow-md)]"
+		>
+			@for (slide of gallery; track trackGallery($index, slide); let i = $index) {
+				<img
+					class="gallery-slide h-full w-full object-cover"
+					[class.gallery-slide--active]="activeGalleryIndex() === i"
+					[alt]="slide.alt"
+					[src]="slide.src"
+					loading="lazy"
+					decoding="async"
+				/>
+			}
+			<div
+				class="absolute inset-0 bg-gradient-to-t from-[#0a0f2e]/80 via-transparent to-transparent"
+				aria-hidden="true"
+			></div>
+			<div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+				@for (slide of gallery; track trackGallery($index, slide); let i = $index) {
+					<button
+						type="button"
+						class="gallery-dot theme-focus"
+						[attr.aria-label]="'Слайд ' + (i + 1)"
+						[attr.aria-current]="activeGalleryIndex() === i ? 'true' : null"
+						[class.gallery-dot--active]="activeGalleryIndex() === i"
+						(click)="setGalleryIndex(i)"
+					></button>
+				}
+			</div>
+		</div>
+		<div class="mt-6 grid gap-4 sm:grid-cols-3">
+			@for (slide of gallery; track trackGallery($index, slide)) {
+				<img
+					class="h-28 w-full rounded-[var(--radius-card)] border border-[var(--c-border)] object-cover sm:h-32"
+					[alt]="slide.alt"
+					[src]="slide.src"
+					loading="lazy"
+					decoding="async"
+				/>
+			}
+		</div>
+	</div>
+</section>
+
+<!-- Features -->
+<section class="contain-section py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="mb-10 text-center font-display text-3xl font-bold text-[var(--c-text-strong)]">
+			Чому варто відвідати
+		</h2>
+		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			@for (feature of features; track trackFeature($index, feature)) {
+				<article class="feature-card glass-card rounded-[var(--radius-card)] p-6 text-center">
+					<span class="feature-card__icon material-symbols-outlined text-4xl text-[var(--c-primary)]" aria-hidden="true">
+						{{ feature.icon }}
+					</span>
+					<p class="mt-4 text-lg font-medium text-[var(--c-text-strong)]">{{ feature.title }}</p>
+				</article>
+			}
+		</div>
+	</div>
+</section>
+
+<!-- Mission -->
+<section class="contain-section bg-[var(--c-bg-secondary)] py-20" appScrollReveal>
+	<div class="mx-auto grid max-w-[var(--container)] items-center gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1.1fr]">
+		<div class="overflow-hidden rounded-[var(--radius-card)] border border-[var(--c-border)] shadow-[var(--shadow-md)]">
+			<img
+				alt="Експозиція музею"
+				class="h-full min-h-64 w-full object-cover"
+				[src]="expoImage"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		<div class="grid gap-8">
+			<article class="rounded-[var(--radius-card)] border-2 border-[var(--c-primary)] bg-[var(--c-bg-primary)] p-8">
+				<h2 class="font-display text-2xl font-bold text-[var(--c-primary)]">{{ mission.goal.title }}</h2>
+				<p class="mt-4 leading-8 text-[var(--c-text)]">{{ mission.goal.text }}</p>
+			</article>
+			<article class="glass-card rounded-[var(--radius-card)] p-8">
+				<h2 class="font-display text-2xl font-bold text-[var(--c-text-strong)]">{{ mission.mission.title }}</h2>
+				<p class="mt-4 leading-8 text-[var(--c-text)]">{{ mission.mission.text }}</p>
+			</article>
+		</div>
+	</div>
+</section>
+
+<!-- Values -->
+<section class="contain-section py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 text-center sm:px-6">
+		<h2 class="font-display text-3xl font-bold text-[var(--c-text-strong)]">НАШІ ЦІННОСТІ</h2>
+		<img
+			alt="Козак — символ цінностей музею"
+			class="values-image mx-auto mt-8 max-h-80 w-auto"
+			[src]="valuesImage"
+			loading="lazy"
+			decoding="async"
+		/>
+		<a
+			aria-label="Дізнатися більше про цінності музею"
+			class="theme-focus mt-8 inline-flex rounded-full bg-[var(--c-primary)] px-6 py-3 text-sm font-semibold text-[var(--c-secondary)]"
+			routerLink="/values"
+		>
+			Дізнатися більше
+		</a>
+	</div>
+</section>
+
+<!-- Founder appeal -->
+<section class="contain-section bg-[var(--c-bg-secondary)] py-20" appScrollReveal>
+	<div class="mx-auto grid max-w-[var(--container)] items-center gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(240px,320px)_1fr]">
+		<img
+			alt="Валерій Галан"
+			class="mx-auto w-full max-w-xs rounded-[var(--radius-card)] border border-[var(--c-border)] object-cover shadow-[var(--shadow-md)]"
+			[src]="founderAppeal.image"
+			loading="lazy"
+			decoding="async"
+		/>
+		<div class="text-center lg:text-left">
+			<h2 class="font-display text-2xl font-bold text-[var(--c-primary)] sm:text-3xl">
+				{{ founderAppeal.title }}
+			</h2>
+			<p class="mt-6 text-lg leading-8 text-[var(--c-text)]">{{ founderAppeal.text }}</p>
+			<a
+				aria-label="Дізнатися більше про звернення засновника"
+				class="theme-focus mt-8 inline-flex rounded-full border border-[var(--c-primary)] px-6 py-3 text-sm font-semibold text-[var(--c-primary)]"
+				routerLink="/appeal"
+			>
+				Дізнатися більше
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- Exhibits -->
+<section id="exhibits" class="contain-section py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="font-display text-center text-3xl font-bold text-[var(--c-text-strong)]">ЕКСПОНАТИ</h2>
+		<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+			@for (exhibit of exhibits; track trackExhibit($index, exhibit)) {
+				<a
+					class="exhibit-card theme-focus block h-72"
+					[attr.aria-label]="'Експонат: ' + exhibit.name"
+					[routerLink]="['/person', exhibit.id]"
+				>
+					<div class="exhibit-card-inner relative h-full w-full">
+						<div class="exhibit-card-face glass-card absolute inset-0 overflow-hidden rounded-[var(--radius-card)]">
+							<img
+								class="h-3/5 w-full object-cover"
+								[alt]="exhibit.name"
+								[src]="exhibit.image"
+								loading="lazy"
+								decoding="async"
+							/>
+							<p class="p-4 text-center font-semibold text-[var(--c-text-strong)]">{{ exhibit.name }}</p>
+						</div>
+						<div
+							class="exhibit-card-face exhibit-card-back glass-card absolute inset-0 flex items-center rounded-[var(--radius-card)] p-4"
+						>
+							<p class="text-sm leading-6 text-[var(--c-text)]">{{ exhibit.description }}</p>
+						</div>
+					</div>
+				</a>
+			}
+		</div>
+		<div class="mt-10 flex flex-wrap justify-center gap-4">
+			<a
+				aria-label="Купити квиток"
+				class="theme-focus rounded-full bg-[var(--c-primary)] px-6 py-3 text-sm font-semibold text-[var(--c-secondary)]"
+				[href]="ticketUrl"
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				Купити квиток
+			</a>
+			<a
+				aria-label="Підтримайте нас"
+				class="theme-focus rounded-full border border-[var(--c-primary)] px-6 py-3 text-sm font-semibold text-[var(--c-primary)]"
+				routerLink="/donation"
+			>
+				Підтримайте нас
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- Stats -->
+<section class="contain-section bg-[var(--c-bg-secondary)] py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="font-display text-center text-3xl font-bold text-[var(--c-text-strong)]">МУЗЕЙ У ЦИФРАХ</h2>
+		<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+			@for (stat of stats; track trackStat($index, stat)) {
+				<article class="stat-card glass-card rounded-[var(--radius-card)] p-6 text-center">
+					<p
+						class="text-4xl font-bold text-[var(--c-primary)]"
+						[attr.aria-label]="stat.label + ': ' + stat.value"
+					>
+						<span [appAnimatedCounter]="stat.value"></span>
+					</p>
+					<p class="mt-2 text-sm text-[var(--c-text-muted)]">{{ stat.label }}</p>
+				</article>
+			}
+		</div>
+	</div>
+</section>
+
+<!-- Partners -->
+<section class="contain-section overflow-hidden py-16" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="font-display text-center text-3xl font-bold text-[var(--c-text-strong)]">НАШІ ПАРТНЕРИ</h2>
+	</div>
+	<div class="partners-marquee mt-10 overflow-hidden">
+		<div class="marquee-track flex w-max items-center gap-12 px-6 sm:gap-16">
+			@for (partner of partners; track trackPartner($index, partner)) {
+				<img
+					class="partner-logo h-14 w-auto max-w-[9rem] shrink-0 object-contain sm:h-16"
+					[alt]="partner.name"
+					[src]="partner.logo"
+					loading="lazy"
+					decoding="async"
+				/>
+			}
+		</div>
+	</div>
+</section>
+
+<!-- Map -->
+<section class="contain-section py-20" appScrollReveal>
+	<div class="mx-auto max-w-[var(--container)] px-4 sm:px-6">
+		<h2 class="font-display mb-6 text-3xl font-bold text-[var(--c-text-strong)]">Як нас знайти</h2>
+		<div class="overflow-hidden rounded-[var(--radius-card)] border border-[var(--c-border)] shadow-[var(--shadow-md)]">
+			<iframe
+				title="Карта розташування музею"
+				class="h-[min(420px,60vh)] w-full"
+				[src]="safeMapUrl"
+				loading="lazy"
+				referrerpolicy="no-referrer-when-downgrade"
+				allowfullscreen
+			></iframe>
+		</div>
+	</div>
+</section>

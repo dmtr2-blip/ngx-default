@@ -1,0 +1,70 @@
+@if (heroImage(); as image) {
+	<section
+		class="page-hero page-hero--banner relative flex min-h-[min(40vh,360px)] items-end overflow-hidden contain-section"
+	>
+		<img
+			class="page-hero__bg absolute inset-0 h-full w-full object-cover"
+			[alt]="title()"
+			[src]="image"
+			loading="eager"
+			decoding="async"
+		/>
+		<div class="page-hero__overlay absolute inset-0" aria-hidden="true"></div>
+		<div class="page-hero__inner relative z-10 mx-auto w-full max-w-[var(--container)] px-4 pb-10 pt-24 sm:px-6 sm:pb-12">
+			<ng-container *ngTemplateOutlet="heroBody" />
+		</div>
+	</section>
+} @else {
+	<section class="page-hero page-hero--minimal contain-section border-b border-[var(--c-border)]">
+		<div class="page-hero__inner mx-auto max-w-[var(--container)] px-4 py-10 sm:px-6 sm:py-12">
+			<ng-container *ngTemplateOutlet="heroBody" />
+		</div>
+	</section>
+}
+
+<ng-template #heroBody>
+	@if (breadcrumbLabel() && breadcrumbHref()) {
+		<p class="page-hero__eyebrow">
+			<a class="theme-focus hover:underline" [routerLink]="breadcrumbHref()!">{{ breadcrumbLabel() }}</a>
+		</p>
+	} @else {
+		<p class="page-hero__eyebrow">Музей</p>
+	}
+
+	<h1 class="page-hero__title">{{ title() }}</h1>
+
+	@if (lead()) {
+		<p class="page-hero__lead">{{ lead() }}</p>
+	}
+
+	<div class="page-hero__actions mt-6 flex flex-wrap items-center gap-3">
+		<a
+			aria-label="Купити квиток"
+			class="page-hero__btn page-hero__btn--primary theme-focus"
+			[href]="ticketUrl"
+			rel="noopener noreferrer"
+			target="_blank"
+		>
+			Купити квиток
+		</a>
+		<a
+			aria-label="Підтримайте нас"
+			class="page-hero__btn page-hero__btn--secondary theme-focus"
+			routerLink="/donation"
+		>
+			Підтримайте нас
+		</a>
+		@if (sourceUrl(); as original) {
+			<a
+				aria-label="Відкрити сторінку на museumsun.org"
+				class="page-hero__btn page-hero__btn--ghost theme-focus"
+				[href]="original"
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				На museumsun.org
+				<span class="material-symbols-outlined text-base" aria-hidden="true">open_in_new</span>
+			</a>
+		}
+	</div>
+</ng-template>
